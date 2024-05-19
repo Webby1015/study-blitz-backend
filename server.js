@@ -1,28 +1,30 @@
-const express = require('express')
-const dotenv = require("dotenv").config()
-const errorHandler = require('./middleware/errorHandler')
+const express = require('express');
+const dotenv = require("dotenv").config();
+const errorHandler = require('./middleware/errorHandler');
+const cors = require('cors'); // Add this line
 
 const app = express();
-const port  = process.env.PORT || 5000 ;
+const port = process.env.PORT || 5000;
 
-const userRoutes =  require('./routes/userRoutes');
-const notesRouter =  require('./routes/notesRoutes');
-const discussionsRouter = require('./routes/discussions')
-const commentsRouter = require('./routes/comments')
+const userRoutes = require('./routes/userRoutes');
+const notesRouter = require('./routes/notesRoutes');
+const discussionsRouter = require('./routes/discussions');
+const commentsRouter = require('./routes/comments');
 const connectDb = require("./config/dbconnect");
 
-connectDb()
-app.use(express.json())
-app.use("/api/users",userRoutes);
-app.use("/api/notes",notesRouter);
-app.use("/api/discussions",discussionsRouter);
-app.use("/api/comments",commentsRouter);
-app.use(errorHandler)
+connectDb();
+app.use(express.json());
+app.use(cors()); // Add this line
+app.use("/api/users", userRoutes);
+app.use("/api/notes", notesRouter);
+app.use("/api/discussions", discussionsRouter);
+app.use("/api/comments", commentsRouter);
+app.use(errorHandler);
 
-app.get('/',(req,res)=>{
-    res.status(200).json({message:"Study-Blitz Api Works"})
-})
+app.get('/', (req, res) => {
+    res.status(200).json({ message: "Study-Blitz Api Works" });
+});
 
-app.listen(port,()=>{
-    console.log(`Server is running at ${port}`)
-})
+app.listen(port, () => {
+    console.log(`Server is running at ${port}`);
+});
