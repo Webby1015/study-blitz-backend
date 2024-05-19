@@ -1,44 +1,51 @@
 const asyncHandler = require("express-async-handler");
 const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //@desc Register a user
 //@route POST /api/users/register
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
-
-  const {name,email,password} = req.body;
-  if(!name || !collage ||!course ||!major ||!year || !email || !password ){
+  const { name, collage, course, major, year, email, password } = req.body;
+  if (!name || !collage || !course || !major || !year || !email || !password) {
     res.status(400);
-    throw new Error("All Fields Are Mandatory")
-  }else{
-    const userAvailable = await userModel.findOne({email});
-    if(userAvailable){
+    throw new Error("All Fields Are Mandatory");
+  } else {
+    const userAvailable = await userModel.findOne({ email });
+    if (userAvailable) {
       res.status(400);
-      throw new Error("Email Already Exists")
-    }else{
-      const hashPassword = await bcrypt.hash(password,10)
+      throw new Error("Email Already Exists");
+    } else {
+      const hashPassword = await bcrypt.hash(password, 10);
       const user = await userModel.create({
-        name : name,
-        email : email,
-        password : hashPassword
-      })
-      if(user){
-        res.status(201).json({ 
-          message : "User Created" ,
-          data : {
-            _id: user.id,
-            name : user.name,
-            email : user.email,}
+        name: name,
+        collage: collage,
+        course: course,
+        major: major,
+        year: year,
+        email: email,
+        password: hashPassword,
       });
-      }else{
+      if (user) {
+        res.status(201).json({
+          message: "User Created",
+          data: {
+            _id: user.id,
+            name: user.name,
+            collage: user.collage,
+            course: user.course,
+            major: user.major,
+            year: user.year,
+            email: user.email,
+          },
+        });
+      } else {
         res.status(400);
-        throw new Error("Invalid Data")
+        throw new Error("Invalid Data");
       }
     }
   }
-  
 });
 
 //@desc Login user
@@ -71,14 +78,15 @@ const loginUser = asyncHandler(async (req, res) => {
   // Generate JWT
   const accessToken = jwt.sign(
     {
-      user: {
+      message: "Logged in Successfully",
+      data: {
         name: user.name,
         email: user.email,
         id: user.id,
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "30m" }
+    { expiresIn: "120m" }
   );
 
   // Send response
@@ -89,7 +97,8 @@ const loginUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/current
 //@access private
 const currentUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: req.user });
+  res.status(200).json({ message:"current user info",
+  data: req.user });
 });
 
 module.exports = { registerUser, loginUser, currentUser };
