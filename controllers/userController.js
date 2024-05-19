@@ -90,7 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   // Send response
-  res.status(200).json({ accessToken });
+  res.status(200).json({ message:"Logged in Successfully",accessToken:accessToken });
 });
 
 const currentUser = asyncHandler(async (req, res) => {
