@@ -3,82 +3,82 @@ const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-//@desc Register a user
-//@route POST /api/users/register
-//@access public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, collage, course, major, year, email, password } = req.body;
+
+  // Check if all fields are provided
   if (!name || !collage || !course || !major || !year || !email || !password) {
     res.status(400);
-    throw new Error("All Fields Are Mandatory");
+    throw new Error("All fields are mandatory");
+  }
+
+  // Check if the user already exists
+  const userExists = await userModel.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("Email already exists");
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create the user
+  const user = await userModel.create({
+    name,
+    collage,
+    course,
+    major,
+    year,
+    email,
+    password: hashedPassword,
+  });
+
+  if (user) {
+    res.status(201).json({
+      message: "User created successfully",
+      data: {
+        _id: user.id,
+        name: user.name,
+        collage: user.collage,
+        course: user.course,
+        major: user.major,
+        year: user.year,
+        email: user.email,
+      },
+    });
   } else {
-    const userAvailable = await userModel.findOne({ email });
-    if (userAvailable) {
-      res.status(400);
-      throw new Error("Email Already Exists");
-    } else {
-      const hashPassword = await bcrypt.hash(password, 10);
-      const user = await userModel.create({
-        name: name,
-        collage: collage,
-        course: course,
-        major: major,
-        year: year,
-        email: email,
-        password: hashPassword,
-      });
-      if (user) {
-        res.status(201).json({
-          message: "User Created",
-          data: {
-            _id: user.id,
-            name: user.name,
-            collage: user.collage,
-            course: user.course,
-            major: user.major,
-            year: user.year,
-            email: user.email,
-          },
-        });
-      } else {
-        res.status(400);
-        throw new Error("Invalid Data");
-      }
-    }
+    res.status(400);
+    throw new Error("Invalid user data");
   }
 });
 
-//@desc Login user
-//@route POST /api/users/login
-//@access public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check if both fields are provided
   if (!email || !password) {
     res.status(400);
-    throw new Error("All Fields are mandatory");
+    throw new Error("All fields are mandatory");
   }
 
   // Find the user by email
   const user = await userModel.findOne({ email });
-
   if (!user) {
     res.status(401);
-    throw new Error("Email or Password is not valid");
+    throw new Error("Invalid email or password");
   }
 
-  // Compare passwords
+  // Compare the passwords
   const isMatch = await bcrypt.compare(password, user.password);
-
   if (!isMatch) {
     res.status(401);
-    throw new Error("Email or Password is not valid");
+    throw new Error("Invalid email or password");
   }
 
   // Generate JWT
   const accessToken = jwt.sign(
     {
-      message: "Logged in Successfully",
+      message: "Logged in successfully",
       data: {
         name: user.name,
         email: user.email,
@@ -86,19 +86,18 @@ const loginUser = asyncHandler(async (req, res) => {
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "120m" }
+    { expiresIn: "2h" } // 2 hours
   );
 
   // Send response
   res.status(200).json({ accessToken });
 });
 
-//@desc Current user info
-//@route POST /api/users/current
-//@access private
 const currentUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message:"current user info",
-  data: req.user });
+  res.status(200).json({
+    message: "Current user information",
+    data: req.user,
+  });
 });
 
 module.exports = { registerUser, loginUser, currentUser };
