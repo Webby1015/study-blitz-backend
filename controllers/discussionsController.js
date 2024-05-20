@@ -4,7 +4,7 @@ const discussionsModel = require("../models/discussionsModel");
 
 
 const getDiscussions = asyncHandler(async (req, res) => {
-  const contacts = await discussionsModel.find({ owner_id: req.user.id });
+  const contacts = await discussionsModel.find();
   res.status(200).json({
     message: "All Contacts Loaded",
     size: contacts.length,
