@@ -29,7 +29,6 @@ const userSchema = mongoose.Schema({
     about :{
         type : String,
         required: [true, "Please Fill of fields"],
-        unique:[true, "Email Address already taken"]
     },
     password :{
         type : String,
