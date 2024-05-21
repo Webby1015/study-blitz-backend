@@ -25,7 +25,7 @@ const createNote = asyncHandler(async (req, res) => {
     URL:URL
   });
 
-  res.status(201).json({ message: "Contact Created", data: note });
+  res.status(201).json({ message: "Note Created", data: note });
 });
 
 

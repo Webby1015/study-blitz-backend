@@ -4,11 +4,11 @@ const commentsModel = require("../models/commentsModel");
 
 
 const getComments = asyncHandler(async (req, res) => {
-  const contacts = await commentsModel.find({ ref_id: req.params.id });
+  const comments = await commentsModel.find({ ref_id: req.params.id });
   res.status(200).json({
-    message: "All Contacts Loaded",
-    size: contacts.length,
-    data: contacts,
+    message: "Comments Loaded",
+    size: comments.length,
+    data: comments,
   });
 });
 

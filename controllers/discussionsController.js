@@ -4,11 +4,11 @@ const discussionsModel = require("../models/discussionsModel");
 
 
 const getDiscussions = asyncHandler(async (req, res) => {
-  const contacts = await discussionsModel.find();
+  const discussions = await discussionsModel.find();
   res.status(200).json({
-    message: "All Contacts Loaded",
-    size: contacts.length,
-    data: contacts,
+    message: "All discussions Loaded",
+    size: discussions.length,
+    data: discussions,
   });
 });
 
@@ -20,20 +20,20 @@ const createDiscussion = asyncHandler(async (req, res) => {
     throw new Error("All fields are mandatory");
   }
 
-  const contact = await discussionsModel.create({
+  const discussion = await discussionsModel.create({
     owner_id: req.user.id,
     title:title,
     content:content
   });
 
-  res.status(201).json({ message: "Discussion Created", data: contact });
+  res.status(201).json({ message: "Discussion Created", data: discussion });
 });
 
 
 const deleteDiscussion = asyncHandler(async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400);
-    throw new Error(`Invalid contact ID: ${req.params.id}`);
+    throw new Error(`Invalid discussion ID: ${req.params.id}`);
   }
 
   const discussionAvailable = await discussionsModel.findById(req.params.id);
@@ -50,7 +50,7 @@ const deleteDiscussion = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     message: `Discussion deleted by ID ${req.params.id}`,
-    data: contactAvailable,
+    data: discussionAvailable,
   });
 });
 
