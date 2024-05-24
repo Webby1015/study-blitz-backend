@@ -12,6 +12,8 @@ const discussionsRouter = require('./routes/discussions');
 const commentsRouter = require('./routes/comments');
 const connectDb = require("./config/dbconnect");
 
+// console.log(process.env.FIREBASE_apiKey)
+
 connectDb();
 app.use(express.json());
 app.use(cors()); // Add this line
