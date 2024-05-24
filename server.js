@@ -11,6 +11,7 @@ const notesRouter = require("./routes/notesRoutes");
 const discussionsRouter = require("./routes/discussions");
 const commentsRouter = require("./routes/comments");
 const firebaseAuth = require("./routes/firebaseAuth");
+const firebaseNotes = require("./routes/firebaseNotes");
 const connectDb = require("./config/dbconnect");
 
 // console.log(process.env.FIREBASE_apiKey)
@@ -23,6 +24,7 @@ app.use("/api/notes", notesRouter);
 app.use("/api/discussions", discussionsRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/firebase/auth", firebaseAuth);
+app.use("/api/firebase/notes", firebaseNotes);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {
