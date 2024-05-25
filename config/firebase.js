@@ -21,11 +21,9 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_measurementId,
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-// console.log(app)
 const fireStore = getFirestore(app);
-// const auth = getAuth(app);
+
 
 module.exports = [app, fireStore];

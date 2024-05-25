@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const validateToken = require('../middleware/validationTokenHandler')
-const {registerUser , signIn , currentuser,signOutUser,authState} = require('../controllers/firebaseAuthController')
+const {authState} = require('../controllers/firebaseAuthController')
 
 router.use(authState);
 router.get('/all',(req,res)=>{

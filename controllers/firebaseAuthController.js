@@ -55,7 +55,7 @@ const signIn = asyncHandler(async (req, res, next) => {
     );
     const user = userCredential.user;
 
-    res.status(201).json({
+    res.status(200).json({
       message: "User Loggedin successfully",
       data: {
         uid: user.uid,
@@ -77,7 +77,7 @@ const currentuser = asyncHandler(async (req, res, next) => {
     if (user) {
       // User is authenticated, return user information
       res.status(200).json({
-        message: "User is logged in",
+        message: "Current User",
         data: {
           uid: user.uid,
           email: user.email,

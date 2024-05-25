@@ -1,8 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
 const errorHandler = require("./middleware/errorHandler");
-const cors = require("cors"); // Add this line
-
+const cors = require("cors"); 
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -12,19 +11,19 @@ const discussionsRouter = require("./routes/discussions");
 const commentsRouter = require("./routes/comments");
 const firebaseAuth = require("./routes/firebaseAuth");
 const firebaseNotes = require("./routes/firebaseNotes");
+const firebaseDiscussions = require("./routes/firebaseDiscussions");
 const connectDb = require("./config/dbconnect");
-
-// console.log(process.env.FIREBASE_apiKey)
 
 connectDb();
 app.use(express.json());
-app.use(cors()); // Add this line
+app.use(cors()); 
 app.use("/api/users", userRoutes);
 app.use("/api/notes", notesRouter);
 app.use("/api/discussions", discussionsRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/firebase/auth", firebaseAuth);
 app.use("/api/firebase/notes", firebaseNotes);
+app.use("/api/firebase/discussions", firebaseDiscussions);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {
