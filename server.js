@@ -12,6 +12,7 @@ const commentsRouter = require("./routes/comments");
 const firebaseAuth = require("./routes/firebaseAuth");
 const firebaseNotes = require("./routes/firebaseNotes");
 const firebaseDiscussions = require("./routes/firebaseDiscussions");
+const firebaseCourses = require("./routes/firebaseCourses");
 const connectDb = require("./config/dbconnect");
 
 connectDb();
@@ -24,6 +25,7 @@ app.use("/api/comments", commentsRouter);
 app.use("/api/firebase/auth", firebaseAuth);
 app.use("/api/firebase/notes", firebaseNotes);
 app.use("/api/firebase/discussions", firebaseDiscussions);
+app.use("/api/firebase/courses", firebaseCourses);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {

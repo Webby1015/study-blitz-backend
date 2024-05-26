@@ -78,6 +78,7 @@ const currentuser = asyncHandler(async (req, res, next) => {
       // User is authenticated, return user information
       res.status(200).json({
         message: "Current User",
+        statsu: true,
         data: {
           uid: user.uid,
           email: user.email,
@@ -87,11 +88,13 @@ const currentuser = asyncHandler(async (req, res, next) => {
       // No user is authenticated
       res.status(401).json({
         message: "No user is logged in",
+        statsu: false,
       });
     }
   } catch (error) {
     res.status(500).json({
       message: "Failed to check authentication state",
+      statsu: false,
       error: error.message,
     });
   }

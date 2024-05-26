@@ -6,13 +6,14 @@ const {
   signIn,
   currentuser,
   signOutUser,
+  authState,
 } = require("../controllers/firebaseAuthController");
 // const firebaseAuthSigninController = require('../controllers/firebaseAuthSigninController')
 
 // router.use(validateToken);
 router.post("/register", registerUser);
 router.post("/signin", signIn);
-router.get("/currentuser", currentuser);
-router.get("/signout", signOutUser);
+router.get("/currentuser",authState, currentuser);
+router.get("/signout",authState, signOutUser);
 
 module.exports = router;
