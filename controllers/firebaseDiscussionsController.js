@@ -1,6 +1,7 @@
 const {
   getFirestore,
   getDocs,
+  addDoc,
   collection,
   doc,
 } = require("firebase/firestore");
@@ -43,4 +44,55 @@ const getDiscussions = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getDiscussions };
+const createDiscussion = asyncHandler(async (req, res) => {
+  try {
+    const { name, title, description } = req.body;
+
+    if (!name || !title || !description) {
+      res.status(400).json({ message: "All fields are required" });
+      return;
+    }
+
+    const newDiscussion = {
+      name,
+      title,
+      description,
+    };
+
+    const docRef = await addDoc(collection(firestore, "discussions"), newDiscussion);
+
+    res.status(201).json({ message: "Discussion created", id: docRef.id });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Error creating discussion", error });
+  }
+});
+
+const createComment = asyncHandler(async (req, res) => {
+  try {
+    const {discussionId, name, comment } = req.body;
+ 
+    if (!discussionId|| !name || !comment) {
+      res.status(400).json({ message: "All fields are required" });
+      return;
+    }
+
+    const newComment = {
+      name,
+      comment,
+      createdAt: new Date().toISOString(),
+    };
+
+    const docRef = await addDoc(
+      collection(firestore, "discussions", discussionId, "comments"),
+      newComment
+    );
+
+    res.status(201).json({ message: "Comment created", id: docRef.id });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating comment", error });
+  }
+});
+
+
+module.exports = { getDiscussions,createComment,createDiscussion };
