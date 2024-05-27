@@ -14,8 +14,8 @@ const getDiscussions = asyncHandler(async (req, res) => {
 
 
 const createDiscussion = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
-  if (!title || !content) {
+  const { name,title, content } = req.body;
+  if (!name || !title || !content) {
     res.status(400);
     throw new Error("All fields are mandatory");
   }

@@ -1,11 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const {authState} = require('../controllers/firebaseAuthController')
+const {authState} = require('../controllers/firebaseAuthController');
+const { getNotes } = require('../controllers/firebaseNotesConroller');
 
 router.use(authState);
-router.get('/all',(req,res)=>{
-    res.status(200).json({message:"notes is working"})
-});
+router.get('/all',getNotes);
 
 
 module.exports = router;

@@ -25,7 +25,7 @@ app.use("/api/comments", commentsRouter);
 app.use("/api/firebase/auth", firebaseAuth);
 app.use("/api/firebase/notes", firebaseNotes);
 app.use("/api/firebase/discussions", firebaseDiscussions);
-app.use("/api/firebase/courses", firebaseCourses);
+// app.use("/api/firebase/notes", firebaseCourses);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {
