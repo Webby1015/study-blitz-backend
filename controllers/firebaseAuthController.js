@@ -64,7 +64,7 @@ const signIn = asyncHandler(async (req, res, next) => {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Failed to Login user",
+      message: "email or password in not correct",
       error: error.message,
     });
   }
