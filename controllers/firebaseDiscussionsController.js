@@ -35,6 +35,7 @@ const getDiscussions = asyncHandler(async (req, res) => {
       title: discussion.title,
       description: discussion.description, // Assuming 'description' is the correct key
       comments: discussion.comments,
+      updatedAt: discussion.updatedAt
     }));
     res
       .status(200)
